@@ -2,23 +2,26 @@ import { gql } from 'graphql-tag';
 
 const typeDefs = gql`
 
-  type Query {
-    me: User
-  }
-
-    type Mutation {
-    login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(bookData: BookInput!): User
-    removeBook(bookId: String!): User
-  }
-
   type User {
     _id: ID
     username: String
     email: String
-    bookCount: number
+    bookCount: Int
     savedBooks: [Book]
+  }
+
+  input UserInput {
+    username: String
+    email: String
+    password: String
+  }
+
+  input BookInput {
+    authors: [String]
+    description: String
+    title: String
+    image: String
+    link: String
   }
 
   type Book {
@@ -30,9 +33,20 @@ const typeDefs = gql`
     link: String
   }
     
-    type Auth {
+  type Auth {
     token: ID!
     user: User
+  }
+    
+  type Query {
+    me: User
+  }
+
+  type Mutation {
+    login(email: String!, password: String!): Auth
+    addUser(input: UserInput!): Auth
+    saveBook(bookData: BookInput!): User
+    removeBook(bookId: String!): User
   }
 
 `;
