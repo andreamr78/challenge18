@@ -6,7 +6,7 @@ import { ApolloServer } from '@apollo/server';// Note: Import from @apollo/serve
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './services/auth.js';
-
+import { fileURLToPath } from 'node:url';
 
 const server = new ApolloServer({
   typeDefs,
@@ -19,6 +19,8 @@ const startApolloServer = async () => {
 
   const PORT = process.env.PORT || 3001;
   const app = express();
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
@@ -30,10 +32,10 @@ const startApolloServer = async () => {
   ));
 
   if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join('../client/dist')));
+    app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.join('../client/dist/index.html'));
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
 
