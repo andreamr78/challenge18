@@ -8,6 +8,7 @@ import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './services/auth.js';
 import { fileURLToPath } from 'node:url';
 
+
 const server = new ApolloServer({
   typeDefs,
   resolvers
@@ -35,7 +36,7 @@ const startApolloServer = async () => {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
     app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+      res.sendFile(path.join('../client/dist/index.html'));
     });
   }
 
